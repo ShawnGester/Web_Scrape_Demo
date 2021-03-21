@@ -13,12 +13,15 @@ import java.io.IOException;
  */
 public class Wikipedia {
     public static void main(String[] args) throws IOException {
-        Document doc = Jsoup.connect("http://en.wikipedia.org/").get();
+        Document doc = Jsoup.connect("https://www.reddit.com/r/popular/").get();
         log(doc.title());
 
-        Elements newsHeadlines = doc.select("#mp-itn b a");
+        Elements newsHeadlines = doc.select("a");
         for (Element headline : newsHeadlines) {
-            log("%s\n\t%s", headline.attr("title"), headline.absUrl("href"));
+            Elements children = headline.children();
+            if (children.size() > 0) {
+                log("%s\n\t%s", headline.child(0).text(), headline.absUrl("href"));
+            }
         }
     }
 
