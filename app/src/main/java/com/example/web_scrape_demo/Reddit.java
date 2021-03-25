@@ -11,14 +11,17 @@ import java.io.IOException;
 /**
  * A simple example, used on the jsoup website.
  */
-public class Wikipedia {
+public class Reddit {
     public static void main(String[] args) throws IOException {
-        Document doc = Jsoup.connect("http://en.wikipedia.org/").get();
+        Document doc = Jsoup.connect("https://www.reddit.com/r/news/").get();
         log(doc.title());
 
-        Elements newsHeadlines = doc.select("#mp-itn b a");
+        Elements newsHeadlines = doc.select("a");
         for (Element headline : newsHeadlines) {
-            log("%s\n\t%s", headline.attr("title"), headline.absUrl("href"));
+//            Elements children = headline.children();
+            if (headline.attr("data-click-id").equals("body")) {
+                log("%s\n\t%s", headline.select("h3").text(), headline.absUrl("href"));
+            }
         }
     }
 
